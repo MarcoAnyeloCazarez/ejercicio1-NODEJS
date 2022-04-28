@@ -3,6 +3,7 @@ const express = require('express');
 
 //Routers
 const { usersRouter } = require('./routes/usersRoutes');
+const { repairsRouter } = require('./routes/repairsRoutes');
 
 //utils
 const { dataBase } = require('./utils/dataBase');
@@ -17,7 +18,7 @@ app.use(express.json());
 //Endpoints
 //http://localhost/4000/api/v1/users
 app.use('/api/v1/users', usersRouter); //Se debe usar esta ruta como una buen practica, se refiere  la api creada, la version uno y el model al que se dirige
-
+app.use('/api/v1/repairs', repairsRouter);
 
 
 
