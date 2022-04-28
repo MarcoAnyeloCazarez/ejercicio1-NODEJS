@@ -1,8 +1,11 @@
 // import the express library
 const express = require('express');
 
-// import Sequelize
-const { Sequelize } = require('sequelize'); 
+//Routers
+const { usersRouter } = require('./routes/usersRoutes');
+
+//utils
+const { dataBase } = require('./utils/dataBase');
 
 //init the express app
 const app = express();
@@ -10,33 +13,21 @@ const app = express();
 //Enable coming Json data
 app.use(express.json());
 
-const users = [];
-const repairs = [];
 
 //Endpoints
-app.get('/users', (req, res) => {
-    res.status(200).json({ 
-        users,
-     });
-});
+//http://localhost/4000/api/v1/users
+app.use('/api/v1/users', usersRouter); //Se debe usar esta ruta como una buen practica, se refiere  la api creada, la version uno y el model al que se dirige
 
-app.post('/users', (req, res) => {
-    console.log(req.body);
-    res.status(201).json({  });
-});
 
-//making the conection with aout data base
-const dataBase = new Sequelize({ 
-    dialect: 'postgres',     //data base driver tipe to conect
-    host:'localhost',        //where our data base is
-    username: 'username',    //deault user on Postgres
-    password: '1602',        //Paswword on postgres
-    database: 'Entregable1-NODEJS'
-});
+
 
 //Validating the credentials
 dataBase.authenticate()
     .then(() => console.log('Data base autenticaded'))
+    .catch(err => console.log(err));
+
+dataBase.sync( )      //Crea y sincroniza los modelos que se tengan en los archivos locales con la de PG      se puede usar sync({force: true} ) para reinciar uera base de datos y dar los valores y conficiración inicial, solo se usa durante producción, NO DEJARLO AHÍ
+    .then(() => console.log('Database synced') )
     .catch(err => console.log(err));
 
 //Sing up server
